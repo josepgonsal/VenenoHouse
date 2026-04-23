@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Veneno House - Restaurante premium en Valencia. Reserva tu mesa ahora">
+    <title>Veneno House - Restaurante Valencia</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b35;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* === HERO CON FOTOS SLIDER === */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(255,107,53,0.2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 5%;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease 0.3s both;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: #ff6b35;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease 0.6s both;
+            box-shadow: 0 10px 30px rgba(255,107,53,0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255,107,53,0.4);
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #ff6b35;
+            transform: scale(1.2);
+        }
+
+        section {
+            padding: 100px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: #333;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border-top: 4px solid #ff6b35;
+            text-align: center;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .menu-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ff6b35;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-top: 1rem;
+        }
+
+        .reservation-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            padding: 2rem;
+        }
+
+        .contact-item i {
+            font-size: 3rem;
+            color: #ff6b35;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 3rem 5%;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background: #25D366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            background: #128C7E;
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: rgba(0,0,0,0.98);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+            .nav-links.active { left: 0; }
+            .hero-content h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">🍷 Veneno House</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="#menu">Menú</a></li>
+                <li><a href="#reservations">Reservas</a></li>
+                <li><a href="#gallery">Galería</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO CON FOTOS SLIDER -->
+    <section id="home" class="hero">
+        <div class="hero-slider">
+            <div class="hero-slide active">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Veneno House">
+            </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Plato Estrella">
+            </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Interior">
+            </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Cócteles">
+            </div>
+        </div>
+
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1>Veneno House</h1>
+                <p>La experiencia gastronómica que <strong>seduce todos tus sentidos</strong><br>
+                Valencia • ⭐⭐⭐⭐⭐ • Reserva ya</p>
+                <a href="#reservations" class="cta-button">
+                    <i class="fas fa-calendar-check"></i> Reservar Mesa
+                </a>
+            </div>
+        </div>
+
+        <div class="slider-dots">
+            <div class="dot active" onclick="currentSlide(1)"></div>
+            <div class="dot" onclick="currentSlide(2)"></div>
+            <div class="dot" onclick="currentSlide(3)"></div>
+            <div class="dot" onclick="currentSlide(4)"></div>
+        </div>
+    </section>
+
+    <!-- Menú -->
+    <section id="menu">
+        <h2><i class="fas fa-utensils"></i> Nuestro Menú</h2>
+        <div class="menu-grid">
+            <div class="menu-card">
+                <h3>🍤 Tartar de Atún</h3>
+                <p>Atún rojo premium, aguacate, soja y wasabi</p>
+                <div class="price">€18</div>
+            </div>
+            <div class="menu-card">
+                <h3>🥩 Tomahawk</h3>
+                <p>Vaca rubia gallega, patatas trufadas</p>
+                <div class="price">€48</div>
+            </div>
+            <div class="menu-card">
+                <h3>🍝 Risotto Setas</h3>
+                <p>Setas silvestres, parmesano 36 meses</p>
+                <div class="price">€22</div>
+            </div>
+            <div class="menu-card">
+                <h3>🍰 Tarta Veneno</h3>
+                <p>Chocolate belga 70%, cremoso avellanas</p>
+                <div class="price">€12</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservas -->
+    <section id="reservations">
+        <h2><i class="fas fa-calendar-check"></i> Reserva tu Mesa</h2>
+        <form class="reservation-form" onsubmit="handleReservation(event)">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Nombre completo *" required>
+            </div>
+            <div class="form-group">
+                <input type="tel" id="phone" placeholder="Teléfono *" required>
+            </div>
+            <div class="form-group">
+                <input type="date" id="date" required>
+            </div>
+            <div class="form-group">
+                <input type="time" id="time" required>
+            </div>
+            <div class="form-group">
+                <select id="guests" required>
+                    <option value="">Nº personas</option>
+                    <option value="2">2 personas</option>
+                    <option value="4">4 personas</option>
+                    <option value="6">6 personas</option>
+                </select>
+            </div>
+            <button type="submit" class="cta-button" style="width:100%;">Reservar Ahora</button>
+        </form>
+    </section>
+
+    <!-- Galería -->
+    <section id="gallery">
+        <h2><i class="fas fa-images"></i> Galería</h2>
+        <div class="gallery">
+            <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&w=400&h=300&fit=crop" alt="Plato">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&w=400&h=300&fit=crop" alt="Cóctel">
+            <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&w=400&h=300&fit=crop" alt="Interior">
+            <img src="https://images.unsplash.com/photo-1542994893-b2b3e0d8a2e8?ixlib=rb-4.0.3&w=400&h=300&fit=crop" alt="Postre">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=400&h=300&fit=crop" alt="Exterior">
+            <img src="https://images.unsplash.com/photo-1565067933-7b6c8d1a665e?ixlib=rb-4.0.3&w=400&h=300&fit=crop" alt="Chef">
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contact">
+        <h2><i class="fas fa-map-marker-alt"></i> Visítanos</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <h3>+34 963 123 456</h3>
+                <p>Reservas directas</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <h3>info@venenohouse.com</h3>
+                <p>Consulta 24h</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-clock"></i>
+                <h3>Horario</h3>
+                <p>13:00-16:00 / 20:00-00:00</p>
+            </div>
+        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3046.2669859999997!2d
